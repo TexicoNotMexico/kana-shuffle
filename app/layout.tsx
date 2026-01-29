@@ -3,9 +3,10 @@ import { Zen_Kaku_Gothic_New } from "next/font/google";
 import "./globals.css";
 
 const zenKakuGothicNew = Zen_Kaku_Gothic_New({
-    weight: "400",
+    weight: ["400", "500", "700"],
     variable: "--font-family-zen",
     subsets: ["latin"],
+    display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -19,8 +20,8 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
-            <body className={`${zenKakuGothicNew.variable} antialiased`}>{children}</body>
+        <html lang="ja">
+            <body className={`${zenKakuGothicNew.className} antialiased`}>{children}</body>
         </html>
     );
 }
