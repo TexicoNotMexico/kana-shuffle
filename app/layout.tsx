@@ -5,6 +5,7 @@ import "./globals.css";
 const zenKakuGothicNew = Zen_Kaku_Gothic_New({
     weight: "400",
     variable: "--font-family-zen",
+    subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
