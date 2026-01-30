@@ -5,4 +5,10 @@
     --color-one: oklch(63.7% 0.237 25.331);
     --color-two: oklch(62.3% 0.214 259.815);
     --color-three: oklch(69.6% 0.17 162.48);
+    --color-four: oklch(64.6% 0.222 41.116);
+    --color-five: oklch(54.1% 0.281 293.009);
+    --color-six: oklch(90.5% 0.182 98.111);
+    --color-seven: oklch(71.2% 0.194 13.428);
+    --color-eight: oklch(50.8% 0.118 165.612);
+    --color-nine: oklch(80.9% 0.105 251.813);
 }

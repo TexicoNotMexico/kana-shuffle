@@ -9,9 +9,33 @@ const createRng = (seed: number) => {
 };
 
 const HIRAGANA_SOURCE =
-    "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわん".split("");
+    "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわん".split(""); // "を" を抜いた 45 字
 
+/**
+ * ひらがなから "を" を抜いた 45 字をシャッフルして 15 字ずつの配列にする
+ * @param seed シード値
+ * @returns 15 字ずつ分割してソートしたひらがなの 2 次元配列
+ */
 export const getShuffledHiragana = (seed: number): string[][] => {
+    return getShuffledHiragana2(seed, [15, 15, 15]);
+};
+
+/**
+ * ひらがなから "を" を抜いた 45 字をシャッフルして分割サイズの配列で指定した字数ずつの配列にする
+ * @param seed シード値
+ * @param groupSizes 分割サイズの配列
+ * @returns groupSizes で分割してソートしたひらがなの 2 次元配列
+ */
+export const getShuffledHiragana2 = (seed: number, groupSizes: number[]): string[][] => {
+    if (groupSizes.length === 0) groupSizes = [15, 15, 15];
+
+    const totalRequested = groupSizes.reduce((sum, size) => sum + size, 0);
+    if (totalRequested !== HIRAGANA_SOURCE.length) {
+        throw new Error(
+            `Total group sizes (${totalRequested}) must match HIRAGANA_SOURCE length (${HIRAGANA_SOURCE.length})`,
+        );
+    }
+
     const arr = [...HIRAGANA_SOURCE];
     const rng = createRng(seed);
 
@@ -21,11 +45,15 @@ export const getShuffledHiragana = (seed: number): string[][] => {
     }
 
     const result: string[][] = [];
-    for (let i = 0; i < arr.length; i += 15) {
-        const group = arr.slice(i, i + 15);
+    let currentIndex = 0;
+    for (const size of groupSizes) {
+        const group = arr.slice(currentIndex, currentIndex + size);
         group.sort((a, b) => a.localeCompare(b));
         result.push(group);
+
+        currentIndex += size;
     }
+
     return result;
 };
 

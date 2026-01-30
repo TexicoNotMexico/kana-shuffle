@@ -22,13 +22,23 @@ export default function HiraganaGrid({ result }: { result: "" | string[][] }) {
         return -1;
     };
 
+    const colorClassNames = [
+        "text-one",
+        "text-two",
+        "text-three",
+        "text-four",
+        "text-five",
+        "text-six",
+        "text-seven",
+        "text-eight",
+        "text-nine",
+    ];
+
     const getColorClass = (char: string): string => {
         if (char === "") return "bg-black";
         const index = getCharacterIndex(char);
-        if (index === 0) return "text-one";
-        if (index === 1) return "text-two";
-        if (index === 2) return "text-three";
-        return "text-gray-400";
+        if (index === -1) return "text-gray-400";
+        return colorClassNames[index % colorClassNames.length];
     };
 
     return (

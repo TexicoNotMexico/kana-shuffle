@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { getShuffledHiragana } from "@/utils/crypto";
+import { getShuffledHiragana2 } from "@/utils/crypto";
 
 export const runtime = "edge";
 
@@ -8,18 +8,30 @@ export async function GET(request: Request) {
     const seedStr = searchParams.get("s");
     const seed = seedStr ? parseInt(seedStr, 10) : 0;
 
-    const grid = getShuffledHiragana(seed);
+    const parseNumberArray = (str: string): number[] => {
+        if (!/^\d+(,\d+)*$/.test(str)) {
+            return [];
+        }
 
-    const color1 = "#fb2c36";
-    const color2 = "#2b7fff";
-    const color3 = "#00bc7d";
+        return str.split(",").map(Number);
+    };
+
+    const groupSizeStr = searchParams.get("g");
+    const groupSize = groupSizeStr ? parseNumberArray(groupSizeStr) : [];
+
+    const grid = getShuffledHiragana2(seed, groupSize);
+
+    const colors = ["#fb2c36", "#2b7fff", "#00bc7d", "#f54a00", "#7f22fe", "#ffdf20", "#ff637e", "#007a55", "#8ec5ff"];
     const colorNone = "#99a1af";
 
     const colorMap: Record<string, string> = {};
 
-    grid[0]?.forEach((char) => (colorMap[char] = color1));
-    grid[1]?.forEach((char) => (colorMap[char] = color2));
-    grid[2]?.forEach((char) => (colorMap[char] = color3));
+    grid.forEach((row, rowIndex) => {
+        const color = colors[rowIndex % colors.length];
+        row?.forEach((char) => {
+            colorMap[char] = color;
+        });
+    });
 
     const getFillColor = (char: string) => colorMap[char] || colorNone;
 
